@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Three.js 3D Model Example</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="model-container">
+    <div class="info">
+      <div>
+        <h1>2019 Lamborghini Huracán EVO Spyder</h1>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Obcaecati alias vel dolorem fugit eveniet corrupti sapiente cupiditate enim ab tempora, ullam placeat libero nostrum delectus optio ducimus vitae repudiandae! Obcaecati?
+        </p>
+      </div>
+    </div>
+    <div class="model-wrapper">
+      
+    </div>
+  </div>
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/RGBELoader.js"></script>
+  
+    <script>
+
+      let model;
+
+      // Scene setup
+      const scene = new THREE.Scene();
+      // Set camera perspective
+      // Parameters:
+      // 75: This is the field of view (FOV) in degrees. A larger value means a wider view.
+      // window.innerWidth / window.innerHeight: This calculates the aspect ratio of the viewport (width divided by height). The aspect ratio ensures that the scene is rendered correctly without distortion.
+      // 0.1: This is the near clipping plane distance. Objects closer than this distance to the camera will not be rendered.
+      // 1000: This is the far clipping plane distance. Objects further than this distance will also not be rendered.
+      const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+
+      const renderer = new THREE.WebGLRenderer({ antialias: true });
+
+      renderer.setClearColor(0xffffff); // White background
+       
+      // Append the renderer's canvas to the model-wrapper
+      document.querySelector('.model-wrapper').appendChild(renderer.domElement);
+
+      // Adjust renderer size to the model-wrapper size
+      function resizeRenderer() {
+          const modelWrapper = document.querySelector('.model-wrapper');
+          renderer.setSize(modelWrapper.clientWidth, modelWrapper.clientHeight);
+          camera.aspect = modelWrapper.clientWidth / modelWrapper.clientHeight;
+
+          camera.updateProjectionMatrix();
+      }
+      // Initial resize
+      resizeRenderer();
+
+      // OrbitControls
+      const controls = new THREE.OrbitControls(camera, renderer.domElement);
+
+      // Lighting
+      const light = new THREE.AmbientLight(0xffffff, 1);
+      scene.add(light);
+
+      const directionalLight = new THREE.DirectionalLight(0xffffff, 1)
+      directionalLight.position.set(1, 2, 1)
+      directionalLight.castShadow = true
+      scene.add(directionalLight)
+
+      // Add HDRLoader
+      const hdriLoader = new THREE.RGBELoader()
+      hdriLoader.load('hdri/lonely_road_afternoon_puresky_1k.hdr', function (texture) {
+        texture.mapping = THREE.EquirectangularReflectionMapping;
+        // scene.background = texture;
+        scene.environment = texture;
+      });
+
+      // Load the 3D model
+      const loader = new THREE.GLTFLoader();
+      loader.load('models/scene.gltf', function (gltf) {
+          model = gltf.scene;
+          model.scale.set(150, 150, 150);
+
+          scene.add(model);
+          renderer.render(scene, camera);
+          
+      }, undefined, function (error) {
+          console.error(error);
+      });
+
+      // Camera position
+      camera.position.set(2, 2, 5); // Adjust these values as needed
+
+      // camera.position.z = 1;
+
+      // Animation loop
+      function animate() {
+          requestAnimationFrame(animate);
+          controls.update();
+
+          if (model) {
+            model.rotation.y += 0.001; // Spin slowly around the x-axis
+            camera.lookAt(model.position); // Keep the camera focused on the model
+          }
+
+          renderer.render(scene, camera);
+      }
+      animate();
+
+      // Handle window resizing
+      window.addEventListener('resize', () => {
+          resizeRenderer(); // Resize the renderer
+      });
+    </script>
+</body>
+</html>

@@ -1,0 +1,134 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.container {
+    max-width: 1170px;
+    margin: 0 auto;
+}
+
+nav {
+    background: #222;
+    padding: 2rem;
+
+    .nav-con {
+        display: flex;
+        justify-content: space-between;
+
+        .logo {
+
+            a {
+                text-decoration: none;
+                color: #fff;
+            }
+        }
+
+        .menu {
+            display: flex;
+
+            li {
+                margin-left: 20px;
+
+                a {
+                    text-decoration: none;
+                    color: #fff;
+                }
+            }
+        }
+    }
+}
+
+.model-container {
+    max-width: 1170px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    height: 500px;
+
+    .info {
+        display: flex;
+        align-items: center;
+        padding: 2rem;
+    }
+
+    .model-wrapper {
+        width: 100%; /* Adjust as needed */
+        height: 100%;
+
+        canvas {
+            width: 100% !important;  /* Full width of the wrapper */
+        }
+    }
+
+    @media screen and (max-width: 700px) {
+        grid-template-columns: 1fr;
+        height: auto;
+    }
+}
+
+.connect {
+    position: relative;
+    height: 300px;
+    background: url("https://www.lamborghini.com/sites/it-en/files/DAM/lamborghini/facelift_2019/model_detail/huracan/evo_rwd_spyder/connected_car/hura_connect_over_03.jpg");
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    text-align: center;
+
+    &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black overlay */
+        z-index: 1; /* Make sure the overlay is above the background but below the text */
+    }
+
+    .connect-info {
+        width: 500px;
+        color: #fff;
+        position: relative; /* Position this relative to allow proper stacking */
+        z-index: 2; /* Ensure the text is above the overlay */
+
+        p {
+            margin-top: 20px;
+        }
+    }
+}
+
+.spec {
+    padding: 3rem 0;
+
+
+    h3 {
+        text-align: center;
+    }
+
+    .spec-table {
+        display: flex;
+        flex-direction: column;
+
+        .spec-table-info {
+            margin: 0 auto;
+            width: 920px;
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(24, 24, 24, 0.2);
+            padding: 20px 0;
+        }
+    }
+    
+}
+
+footer {
+    background: #222;
+    padding: 2rem;
+    color: #fff;
+    text-align: center;
+}
